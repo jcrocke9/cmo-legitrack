@@ -1,0 +1,18 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "legistation-tracking-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/legistationTracking/LegistationTrackingWebPart.js",
+          "manifest": "./src/webparts/legistationTracking/LegistationTrackingWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "LegistationTrackingWebPartStrings": "lib/webparts/legistationTracking/loc/{locale}.js"
+  }
+}

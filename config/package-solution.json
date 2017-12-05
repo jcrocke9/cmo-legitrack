@@ -1,0 +1,11 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "cmo-legitrack-client-side-solution",
+    "id": "27aa3ab7-7b74-4d4c-837e-63c1324b5fb2",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "zippedPackage": "solution/cmo-legitrack.sppkg"
+  }
+}
