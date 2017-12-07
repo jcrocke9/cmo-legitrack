@@ -1,26 +1,117 @@
-import * as React from 'react';
-import { IGetTheSunshineProps } from './IGetTheSunshineProps';
+import * as React from "react";
+import { IGetTheSunshineProps } from "./IGetTheSunshineProps";
+import HttpClientResponse from "@microsoft/sp-http/lib/httpClient/HttpClientResponse";
+import HttpClient from "@microsoft/sp-http/lib/httpClient/HttpClient";
+import { IHttpClientOptions } from "@microsoft/sp-http";
+import { IBill } from "./IBill";
+import styles from "./LegistationTracking.module.scss";
+import ServiceScope from "@microsoft/sp-core-library/lib/serviceScope/ServiceScope";
 
-export default class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
-    private GetSunshine(): void {
-        let p1 =  new Promise<string>((resolve: (itemId: string) => void, reject: (error: any) => void): void => {
-            const xhr = new XMLHttpRequest();
-            const url = 'http://api.richmondsunlight.com/1.0/bills/2018.json'
-            xhr.open("GET", url);
-            xhr.onload = () => resolve(xhr.responseText);
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send();
-        });
-        p1.then((response) => {
-            return response.json();
-        })
+export class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
+    constructor(props: any) {
+        super(props);
+        this.onChange_bill = this.onChange_bill.bind(this);
+        this.onChange_billNumber = this.onChange_billNumber.bind(this);
+        this.onChange_billChamber = this.onChange_billChamber.bind(this);
+        this.onChange_billDateIntroduced = this.onChange_billDateIntroduced.bind(this);
+        this.onChange_billOutcome = this.onChange_billOutcome.bind(this);
+        this.onChange_billTitle = this.onChange_billTitle.bind(this);
+        this.onChange_testBody = this.onChange_testBody.bind(this);
+        this.onChange_testId = this.onChange_testId.bind(this);
+        this.onChange_testUserId = this.onChange_testUserId.bind(this);
+    }
+    private legYear: string = "2018";
+    private url: string = "https://jsonplaceholder.typicode.com/posts/1";
+    // "http://api.richmondsunlight.com/1.0/bills/" + this.legYear + ".json";
+    private makeRequest(): Headers {
+        console.log("making Headers");
+        const requestHeaders: Headers = new Headers();
+        requestHeaders.append("Content-type", "application/json");
+        requestHeaders.append("Cache-Control", "max-age=0");
+        requestHeaders.append("Accept", "applicatoin/json");
+        return requestHeaders;
     }
 
-    render() {
+    private httpClientOptions: IHttpClientOptions = {
+        headers: this.makeRequest()
+    };
+//#region
+    public onChange_bill(bill: string): void {
+        this.props.onChange_bill(bill);
+    }
+    public onChange_billNumber(billNumber: string): void {
+        this.props.onChange_billNumber(billNumber);
+    }
+    public onChange_billChamber(billChamber: string): void {
+        this.props.onChange_billChamber(billChamber);
+    }
+    public onChange_billDateIntroduced(billDateIntroduced: string): void {
+        this.props.onChange_billDateIntroduced(billDateIntroduced);
+    }
+    public onChange_billOutcome(billOutcome: string): void {
+        this.props.onChange_billOutcome(billOutcome);
+    }
+    public onChange_billTitle(billTitle: string): void {
+        this.props.onChange_billTitle(billTitle);
+    }
+    public onChange_testBody(testBody: string): void {
+        this.props.onChange_testBody(testBody);
+    }
+    public onChange_testId(testId: number): void {
+        this.props.onChange_testId(testId);
+    }
+    public onChange_testUserId(testUserId: number): void {
+        this.props.onChange_testUserId(testUserId);
+    }
+//#endregion
+    private GetSunshine(): void {
+        console.log("Going to load bills");
+        this.props.httpClient.fetch(this.url, HttpClient.configurations.v1, this.httpClientOptions)
+            .then((response: HttpClientResponse): Promise<IBill> => {
+                console.log("Response from Richmond Sunshine");
+                console.log(response);
+                return response.json();
+            }, (error: any): void => {
+                console.log(error);
+            }).then((bill: IBill): void => {
+                console.log("Opened");
+                console.log(bill);
+                if (bill.number != null) {
+                    this.onChange_billNumber(bill.number);
+                }
+                if (bill.chamber != null) {
+                    this.onChange_billChamber(bill.chamber);
+                }
+                if (bill.date_introduced != null) {
+                    this.onChange_billDateIntroduced(bill.date_introduced);
+                }
+                if (bill.outcome != null) {
+                    this.onChange_billOutcome(bill.outcome);
+                }
+                if (bill.title != null) {
+                    this.onChange_billTitle(bill.title);
+                }
+                if (bill.body != null) {
+                    this.onChange_testBody(bill.body);
+                }
+                if (bill.id != null) {
+                    this.onChange_testId(bill.id);
+                }
+                if (bill.userId != null) {
+                    this.onChange_testUserId(bill.userId);
+                }
+            });
+    }
+
+    render(): React.ReactElement<IGetTheSunshineProps> {
+        const httpClient: HttpClient = this.props.httpClient;
         return (
             <div>
-                <input value={this.GetSunshine()}></input>
+                <p>{this.props.bill}</p>
+                <button onClick={() => this.GetSunshine()} className={styles.button}>
+                    Load Bill Titles
+            </button>
             </div>
-        )
+        );
     }
 }

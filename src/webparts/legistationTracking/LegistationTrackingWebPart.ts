@@ -21,7 +21,8 @@ export default class LegistationTrackingWebPart extends BaseClientSideWebPart<IL
     const element: React.ReactElement<ILegistationTrackingProps > = React.createElement(
       LegistationTracking,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        httpClient: this.context.httpClient
       }
     );
 

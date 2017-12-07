@@ -12,5 +12,12 @@
       "es6-collections",
       "webpack-env"
     ]
+  },
+  "rules": {
+    "quotemark": [
+      true,
+      "single",
+      "jsx-single"
+    ]
   }
 }
