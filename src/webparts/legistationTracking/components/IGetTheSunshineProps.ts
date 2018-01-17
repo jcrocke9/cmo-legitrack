@@ -1,8 +1,9 @@
 import HttpClient from "@microsoft/sp-http/lib/httpClient/HttpClient";
+import { IBill } from "./IBill";
 
 export interface IGetTheSunshineProps {
     httpClient?: HttpClient;
-    bill: string;
+    /* bill: string;
     onChange_bill(bill: string): any;
     billNumber?: string;
     onChange_billNumber(billNumber: string): any;
@@ -19,5 +20,7 @@ export interface IGetTheSunshineProps {
     testId?: number;
     onChange_testId(testId: number): any;
     testUserId?: number;
-    onChange_testUserId(testUserId: number): any;
+    onChange_testUserId(testUserId: number): any; */
+    billObjArr?: IBill[];
+    onChange_billObjArr(billObjArr: IBill[]): any;
   }

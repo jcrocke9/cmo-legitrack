@@ -1,18 +1,20 @@
-import * as React from 'react';
-import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { Version } from "@microsoft/sp-core-library";
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField
-} from '@microsoft/sp-webpart-base';
+} from "@microsoft/sp-webpart-base";
 
-import * as strings from 'LegistationTrackingWebPartStrings';
-import LegistationTracking from './components/LegistationTracking';
-import { ILegistationTrackingProps } from './components/ILegistationTrackingProps';
+import * as strings from "LegistationTrackingWebPartStrings";
+import LegistationTracking from "./components/LegistationTracking";
+import { ILegistationTrackingProps } from "./components/ILegistationTrackingProps";
 
 export interface ILegistationTrackingWebPartProps {
   description: string;
+  listName: string;
+  legYear: number;
 }
 
 export default class LegistationTrackingWebPart extends BaseClientSideWebPart<ILegistationTrackingWebPartProps> {
@@ -22,7 +24,11 @@ export default class LegistationTrackingWebPart extends BaseClientSideWebPart<IL
       LegistationTracking,
       {
         description: this.properties.description,
-        httpClient: this.context.httpClient
+        httpClient: this.context.httpClient,
+        spHttpClient: this.context.spHttpClient,
+        siteUrl: this.context.pageContext.web.absoluteUrl,
+        listName: this.properties.listName,
+        legYear: this.properties.legYear
       }
     );
 
@@ -30,7 +36,7 @@ export default class LegistationTrackingWebPart extends BaseClientSideWebPart<IL
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse("1.0");
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -44,8 +50,14 @@ export default class LegistationTrackingWebPart extends BaseClientSideWebPart<IL
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
+                PropertyPaneTextField("description", {
                   label: strings.DescriptionFieldLabel
+                }),
+                PropertyPaneTextField("legYear",{
+                  label: strings.LegYearFieldLabel
+                }),
+                PropertyPaneTextField("listName", {
+                  label: strings.ListNameFieldLabel
                 })
               ]
             }

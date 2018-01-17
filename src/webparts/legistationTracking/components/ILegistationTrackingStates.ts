@@ -1,3 +1,5 @@
+import { IBill } from "./IBill";
+
 export interface ILegistationTrackingStates {
     bill?: string;
     billNumber?: string;
@@ -8,4 +10,5 @@ export interface ILegistationTrackingStates {
     testBody?: string;
     testId?: number;
     testUserId?: number;
+    billObjArr?: IBill[];
 }
