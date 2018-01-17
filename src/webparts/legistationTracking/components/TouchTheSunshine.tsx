@@ -1,14 +1,15 @@
 import * as React from "react";
 import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 import { ITouchTheSunshineProps } from "./ITouchTheSunshineProps";
+import { ITouchTheSunshineState } from "./ITouchTheSunshineState";
 import styles from "./LegistationTracking.module.scss";
 import { IBill } from "./IBill";
 
-export class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, void> {
+export class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, ITouchTheSunshineState> {
     private listItemEntityTypeName: string = undefined;
-    constructor(props: ITouchTheSunshineProps) {
+    /* constructor(props: ITouchTheSunshineProps) {
         super(props);
-    }
+    } */
     public render(): React.ReactElement<ITouchTheSunshineProps> {
         return (
             <div>

@@ -83,6 +83,9 @@ export default class LegistationTracking extends React.Component<ILegistationTra
     let testUserId: number = this.state.testUserId;*/
     let billObjArr: IBill[] = this.state.billObjArr;
     let httpClient: HttpClient = this.props.httpClient;
+    let listName: string = this.props.listName;
+    let spHttpClient: SPHttpClient = this.props.spHttpClient;
+    let siteUrl: string = this.props.siteUrl;
     const daBills: JSX.Element[] = this.state.billObjArr.map((indvBill: IBill, i: number): JSX.Element => {
       return (
         <tr>
@@ -123,6 +126,10 @@ export default class LegistationTracking extends React.Component<ILegistationTra
                 {daBills}
               </table>
               <TouchTheSunshine
+                listName={listName}
+                spHttpClient={spHttpClient}
+                siteUrl={siteUrl}
+                billObjArr={billObjArr}
               />
             </div>
           </div>

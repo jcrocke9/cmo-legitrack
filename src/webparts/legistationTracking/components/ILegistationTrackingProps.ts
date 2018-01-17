@@ -3,6 +3,8 @@ import { SPHttpClient } from "@microsoft/sp-http";
 export interface ILegistationTrackingProps {
   description: string;
   httpClient: HttpClient;
+  listName: string;
+  siteUrl: string;
   spHttpClient: SPHttpClient;
   legYear: number;
 
