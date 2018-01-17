@@ -4,7 +4,7 @@ import { ITouchTheSunshineProps } from "./ITouchTheSunshineProps";
 import styles from "./LegistationTracking.module.scss";
 import { IBill } from "./IBill";
 
-export default class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, void> {
+export class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, void> {
     private listItemEntityTypeName: string = undefined;
     constructor(props: ITouchTheSunshineProps) {
         super(props);
