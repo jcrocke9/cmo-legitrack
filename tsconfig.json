@@ -18,6 +18,7 @@
       true,
       "single",
       "jsx-single"
-    ]
+    ],
+    "max-line-length": [true, 2000]
   }
 }
