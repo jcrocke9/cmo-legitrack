@@ -6,4 +6,6 @@ export interface ITouchTheSunshineProps {
     spHttpClient: SPHttpClient;
     siteUrl: string;
     billObjArr?: IBill[];
+    status?: string;
+    onChange_status(status: string): any;
 }

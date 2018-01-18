@@ -1,15 +1,21 @@
 import * as React from "react";
 import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
+import pnp from "sp-pnp-js";
 import { ITouchTheSunshineProps } from "./ITouchTheSunshineProps";
 import { ITouchTheSunshineState } from "./ITouchTheSunshineState";
 import styles from "./LegistationTracking.module.scss";
 import { IBill } from "./IBill";
+import { IBillCt } from "./IBillCt";
 
 export class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, ITouchTheSunshineState> {
     private listItemEntityTypeName: string = undefined;
-    /* constructor(props: ITouchTheSunshineProps) {
+    constructor(props: ITouchTheSunshineProps) {
         super(props);
-    } */
+        this.onChange_status = this.onChange_status.bind(this);
+    }
+    public onChange_status(status: string): void {
+        this.props.onChange_status(status);
+    }
     public render(): React.ReactElement<ITouchTheSunshineProps> {
         return (
             <div>
@@ -21,8 +27,25 @@ export class TouchTheSunshine extends React.Component<ITouchTheSunshineProps, IT
     }
 
     private touchSunshine(): void {
-        this.props.billObjArr.map((indvBill: IBill, i: number) => {
-            this.createItem(indvBill);
+        let arrayOfSpItems: IBillCt[];
+        pnp.sp.web.lists.getByTitle(this.props.listName).items.get().then(r => {
+            arrayOfSpItems = r;
+            this.props.billObjArr.map((indvBill: IBill, i: number) => {
+                let flagOfExisting: boolean;
+                arrayOfSpItems.map((spItem: IBillCt) => {
+                    if (indvBill.number === spItem.legiNumber) {
+                        flagOfExisting = true;
+                    }
+                });
+                if (!flagOfExisting) {
+                    this.createItem(indvBill);
+                }
+                flagOfExisting = undefined;
+                if (i === this.props.billObjArr.length) {
+                    let newStats: string = "Uploaded test bills";
+                    this.onChange_status(newStats);
+                }
+            });
         });
     }
 

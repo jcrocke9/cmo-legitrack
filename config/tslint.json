@@ -17,6 +17,7 @@
       "export-name": false,
       "forin": false,
       "label-position": false,
+      "max-line-length": false,
       "member-access": true,
       "no-arg": false,
       "no-console": false,

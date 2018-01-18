@@ -13,86 +13,42 @@ import { IBill } from "./IBill";
 class Abill<IBill> { }
 
 export default class LegistationTracking extends React.Component<ILegistationTrackingProps, ILegistationTrackingStates> {
+  private listItemEntityTypeName: string = undefined;
   constructor(props: any) {
     super(props);
-    /* this.onChange_bill = this.onChange_bill.bind(this);
-    this.onChange_billNumber = this.onChange_billNumber.bind(this);
-    this.onChange_billChamber = this.onChange_billChamber.bind(this);
-    this.onChange_billDateIntroduced = this.onChange_billDateIntroduced.bind(this);
-    this.onChange_billOutcome = this.onChange_billOutcome.bind(this);
-    this.onChange_billTitle = this.onChange_billTitle.bind(this);
-    this.onChange_testBody = this.onChange_testBody.bind(this);
-    this.onChange_testId = this.onChange_testId.bind(this);
-    this.onChange_testUserId = this.onChange_testUserId.bind(this); */
     this.onChange_billObjArr = this.onChange_billObjArr.bind(this);
+    this.onChange_status = this.onChange_status.bind(this);
     this.state = {
-      /* bill: "",
-      billNumber: "",
-      billChamber: "",
-      billDateIntroduced: "",
-      billOutcome: "",
-      billTitle: "",
-      testBody: "",
-      testId: 0,
-      testUserId: 0, */
-      billObjArr: []
+      billObjArr: [],
+      status: this.listNotConfigured(this.props) ? "Please configure list in Web Part properties" : "Ready"
     };
   }
-  //#region
-  /* public onChange_bill(bill: string): void {
-    this.setState({ bill });
+  public componentWillReceiveProps(nextProps: ILegistationTrackingProps): void {
+    this.listItemEntityTypeName = undefined;
+    this.setState({
+      status: this.listNotConfigured(nextProps) ? "Please configure list in Web Part properties" : "Ready"
+    });
   }
-  public onChange_billNumber(billNumber: string): void {
-    this.setState({ billNumber });
-  }
-  public onChange_billChamber(billChamber: string): void {
-    this.setState({ billChamber });
-  }
-  public onChange_billDateIntroduced(billDateIntroduced: string): void {
-    this.setState({ billDateIntroduced });
-  }
-  public onChange_billOutcome(billOutcome: string): void {
-    this.setState({ billOutcome });
-  }
-  public onChange_billTitle(billTitle: string): void {
-    this.setState({ billTitle });
-  }
-  public onChange_testBody(testBody: string): void {
-    this.setState({ testBody });
-  }
-  public onChange_testId(testId: number): void {
-    this.setState({ testId });
-  }
-  public onChange_testUserId(testUserId: number): void {
-    this.setState({ testUserId });
-  } */
   public onChange_billObjArr(billObjArr: IBill[]): void {
     this.setState({ billObjArr });
   }
-  //#endregion
+  public onChange_status(status: string): void {
+    this.setState({ status });
+  }
 
   public render(): React.ReactElement<ILegistationTrackingProps> {
-    /* let bill: string = this.state.bill;
-    let billNumber: string = this.state.billNumber;
-    let billChamber: string = this.state.billChamber;
-    let billDateIntroduced: string = this.state.billDateIntroduced;
-    let billOutcome: string = this.state.billOutcome;
-    let billTitle: string = this.state.billTitle;
-    let testBody: string = this.state.testBody;
-    let testId: number = this.state.testId;
-    let testUserId: number = this.state.testUserId;*/
     let billObjArr: IBill[] = this.state.billObjArr;
+    let status: string = this.state.status;
     let httpClient: HttpClient = this.props.httpClient;
     let listName: string = this.props.listName;
     let spHttpClient: SPHttpClient = this.props.spHttpClient;
     let siteUrl: string = this.props.siteUrl;
+    let legYear: number = this.props.legYear;
     const daBills: JSX.Element[] = this.state.billObjArr.map((indvBill: IBill, i: number): JSX.Element => {
       return (
         <tr>
           <td>{indvBill.title}</td>
-          <td>{indvBill.body}</td>
-          <td>{indvBill.id}</td>
-          <td>{indvBill.userId}</td>
+          <td>{indvBill.number}</td>
         </tr>
       );
     });
@@ -103,25 +59,18 @@ export default class LegistationTracking extends React.Component<ILegistationTra
           <div className={styles.row}>
             <div className={styles.column}>
               <p className={styles.description}>{escape(this.props.description)}</p>
+              <div>{this.state.status}</div>
+              <div>&nbsp;</div>
               <GetTheSunshine
                 httpClient={httpClient}
-                /*bill={bill} onChange_bill={this.onChange_bill}
-                billNumber={billNumber} onChange_billNumber={this.onChange_billNumber}
-                billChamber={billChamber} onChange_billChamber={this.onChange_billChamber}
-                billDateIntroduced={billDateIntroduced} onChange_billDateIntroduced={this.onChange_billDateIntroduced}
-                billOutcome={billOutcome} onChange_billOutcome={this.onChange_billOutcome}
-                billTitle={billTitle} onChange_billTitle={this.onChange_billTitle}
-                testBody={testBody} onChange_testBody={this.onChange_testBody}
-                testId={testId} onChange_testId={this.onChange_testId}
-                testUserId={testUserId} onChange_testUserId={this.onChange_testUserId} */
                 billObjArr={billObjArr} onChange_billObjArr={this.onChange_billObjArr}
+                legYear={legYear}
+                status={status} onChange_status={this.onChange_status}
               />
               <table>
                 <tr>
                   <td>Title</td>
-                  <td>Body</td>
-                  <td>Id</td>
-                  <td>UserId</td>
+                  <td>Number</td>
                 </tr>
                 {daBills}
               </table>
@@ -130,11 +79,17 @@ export default class LegistationTracking extends React.Component<ILegistationTra
                 spHttpClient={spHttpClient}
                 siteUrl={siteUrl}
                 billObjArr={billObjArr}
+                status={status} onChange_status={this.onChange_status}
               />
             </div>
           </div>
         </div>
       </div>
     );
+  }
+  private listNotConfigured(props: ILegistationTrackingProps): boolean {
+    return props.listName === undefined ||
+      props.listName === null ||
+      props.listName.length === 0;
   }
 }

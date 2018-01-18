@@ -12,25 +12,17 @@ class Abill<IBill> { }
 export class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
     constructor(props: any) {
         super(props);
-        /*this.onChange_bill = this.onChange_bill.bind(this);
-        this.onChange_billNumber = this.onChange_billNumber.bind(this);
-        this.onChange_billChamber = this.onChange_billChamber.bind(this);
-        this.onChange_billDateIntroduced = this.onChange_billDateIntroduced.bind(this);
-        this.onChange_billOutcome = this.onChange_billOutcome.bind(this);
-        this.onChange_billTitle = this.onChange_billTitle.bind(this);
-        this.onChange_testBody = this.onChange_testBody.bind(this);
-        this.onChange_testId = this.onChange_testId.bind(this);
-        this.onChange_testUserId = this.onChange_testUserId.bind(this); */
         this.onChange_billObjArr = this.onChange_billObjArr.bind(this);
+        this.onChange_status = this.onChange_status.bind(this);
     }
-    private legYear: string = "2018";
-    private url: string = "https://jsonplaceholder.typicode.com/posts";
-    // private url: string =  "http://api.richmondsunlight.com/1.0/bills/" + this.legYear + ".json";
+    private legYear: string = undefined;
+    // private url: string = "https://jsonplaceholder.typicode.com/posts";
+    private url: string = "https://api.richmondsunlight.com/1.0/bills/" + this.legYear + ".json";
     private makeRequest(): Headers {
         console.log("making Headers");
         const requestHeaders: Headers = new Headers();
-        requestHeaders.append("Content-type", "application/json");
-        requestHeaders.append("Cache-Control", "max-age=0");
+        // requestHeaders.append("Content-type", "application/json");
+        // requestHeaders.append("Cache-Control", "max-age=0");
         requestHeaders.append("Accept", "application/json");
         return requestHeaders;
     }
@@ -38,40 +30,16 @@ export class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
     private httpClientOptions: IHttpClientOptions = {
         headers: this.makeRequest()
     };
-    //#region
-    /* public onChange_bill(bill: string): void {
-        this.props.onChange_bill(bill);
-    }
-    public onChange_billNumber(billNumber: string): void {
-        this.props.onChange_billNumber(billNumber);
-    }
-    public onChange_billChamber(billChamber: string): void {
-        this.props.onChange_billChamber(billChamber);
-    }
-    public onChange_billDateIntroduced(billDateIntroduced: string): void {
-        this.props.onChange_billDateIntroduced(billDateIntroduced);
-    }
-    public onChange_billOutcome(billOutcome: string): void {
-        this.props.onChange_billOutcome(billOutcome);
-    }
-    public onChange_billTitle(billTitle: string): void {
-        this.props.onChange_billTitle(billTitle);
-    }
-    public onChange_testBody(testBody: string): void {
-        this.props.onChange_testBody(testBody);
-    }
-    public onChange_testId(testId: number): void {
-        this.props.onChange_testId(testId);
-    }
-    public onChange_testUserId(testUserId: number): void {
-        this.props.onChange_testUserId(testUserId);
-    } */
     public onChange_billObjArr(billObjArr: IBill[]): void {
         this.props.onChange_billObjArr(billObjArr);
     }
-    //#endregion
+    public onChange_status(status: string): void {
+        this.props.onChange_status(status);
+    }
     private GetSunshine(): void {
-        console.log("Going to load bills");
+        this.legYear = this.props.legYear.toString();
+        let newStats: string = "Downloaded bills";
+        this.onChange_status(newStats);
         this.props.httpClient.fetch(this.url, HttpClient.configurations.v1, this.httpClientOptions)
             .then((response: HttpClientResponse): Promise<IBill[]> => {
                 console.log("Response from Richmond Sunshine");
@@ -85,41 +53,40 @@ export class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
                 billArr.forEach(bill => {
                     let newBill: IBill = new Abill;
                     if (bill.number != null) {
-                        // this.onChange_billNumber(bill.number);
                         newBill.number = bill.number;
                     }
                     if (bill.chamber != null) {
-                        // this.onChange_billChamber(bill.chamber);
                         newBill.chamber = bill.chamber;
                     }
                     if (bill.date_introduced != null) {
-                        // this.onChange_billDateIntroduced(bill.date_introduced);
                         newBill.date_introduced = bill.date_introduced;
                     }
                     if (bill.outcome != null) {
-                        // this.onChange_billOutcome(bill.outcome);
                         newBill.outcome = bill.outcome;
                     }
                     if (bill.title != null) {
-                        // this.onChange_billTitle(bill.title);
                         newBill.title = bill.title;
                     }
                     if (bill.body != null) {
-                        // this.onChange_testBody(bill.body);
                         newBill.body = bill.body;
                     }
                     if (bill.id != null) {
-                        // this.onChange_testId(bill.id);
                         newBill.id = bill.id;
                     }
                     if (bill.userId != null) {
-                        // this.onChange_testUserId(bill.userId);
                         newBill.userId = bill.userId;
                     }
                     this.props.billObjArr.push(newBill);
                 });
                 this.onChange_billObjArr(this.props.billObjArr);
             });
+    }
+    private GetTestSunshine(): void {
+        let newStats: string = "Downloaded test bills";
+        this.onChange_status(newStats);
+        let testSunshine: string = '[{"number":"hb1","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"FOIA; release of scholastic records, definition of records includes directory information."},{"number":"hb2","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Teacher licensure; reciprocity, spouses of Armed Forces members."},{"number":"hb3","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Dual enrollment courses; quality standards, universal transfer course credit."},{"number":"hb4","chamber":"house","date_introduced":"2017-11-20","status":"in subcommittee","outcome":"","title":"Case management system; public accessibility."},{"number":"hb5","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Campaign finance; prohibited personal use, penalty."},{"number":"hb6","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Security freezes; elimination of fees."},{"number":"hb7","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Campaign finance; prohibited personal use."},{"number":"hb8","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Public procurement; agreements with labor organizations."},{"number":"hb9","chamber":"house","date_introduced":"2017-11-20","status":"in subcommittee","outcome":"","title":"Safety restraints; all occupants of motor vehicles required to utilize."},{"number":"hb10","chamber":"house","date_introduced":"2017-11-20","status":"in committee","outcome":"","title":"Hate crimes; criminal acts against persons because of gender, etc."}]';
+        let testSunshineJson: any = JSON.parse(testSunshine);
+        this.onChange_billObjArr(testSunshineJson);
     }
 
     public render(): React.ReactElement<IGetTheSunshineProps> {
@@ -128,7 +95,11 @@ export class GetTheSunshine extends React.Component<IGetTheSunshineProps, {}> {
             <div>
                 <button onClick={() => this.GetSunshine()} className={styles.button}>
                     Load Bill Titles
-            </button>
+                </button>
+                &nbsp;
+                <button onClick={() => this.GetTestSunshine()} className={styles.button}>
+                    Load TEST Bill Titles
+                </button>
             </div>
         );
     }
