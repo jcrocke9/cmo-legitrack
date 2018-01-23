@@ -1,1 +1,3 @@
-export interface ITouchTheSunshineState {}
+export interface ITouchTheSunshineState {
+    select: string;
+}

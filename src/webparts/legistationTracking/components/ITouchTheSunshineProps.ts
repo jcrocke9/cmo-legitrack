@@ -7,5 +7,6 @@ export interface ITouchTheSunshineProps {
     siteUrl: string;
     billObjArr?: IBill[];
     status?: string;
+    relativeUrl?: string;
     onChange_status(status: string): any;
 }

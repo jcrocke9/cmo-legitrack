@@ -27,6 +27,7 @@ export default class LegistationTrackingWebPart extends BaseClientSideWebPart<IL
         httpClient: this.context.httpClient,
         spHttpClient: this.context.spHttpClient,
         siteUrl: this.context.pageContext.web.absoluteUrl,
+        relativeUrl: this.context.pageContext.web.serverRelativeUrl,
         listName: this.properties.listName,
         legYear: this.properties.legYear
       }

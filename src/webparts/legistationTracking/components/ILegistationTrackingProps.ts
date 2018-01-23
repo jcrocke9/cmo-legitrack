@@ -5,6 +5,7 @@ export interface ILegistationTrackingProps {
   httpClient: HttpClient;
   listName: string;
   siteUrl: string;
+  relativeUrl: string;
   spHttpClient: SPHttpClient;
   legYear: number;
 

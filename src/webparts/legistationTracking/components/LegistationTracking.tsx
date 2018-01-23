@@ -43,6 +43,7 @@ export default class LegistationTracking extends React.Component<ILegistationTra
     let listName: string = this.props.listName;
     let spHttpClient: SPHttpClient = this.props.spHttpClient;
     let siteUrl: string = this.props.siteUrl;
+    let relativeUrl: string = this.props.relativeUrl;
     let legYear: number = this.props.legYear;
     const daBills: JSX.Element[] = this.state.billObjArr.map((indvBill: IBill, i: number): JSX.Element => {
       return (
@@ -78,6 +79,7 @@ export default class LegistationTracking extends React.Component<ILegistationTra
                 listName={listName}
                 spHttpClient={spHttpClient}
                 siteUrl={siteUrl}
+                relativeUrl={relativeUrl}
                 billObjArr={billObjArr}
                 status={status} onChange_status={this.onChange_status}
               />
